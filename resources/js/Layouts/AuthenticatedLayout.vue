@@ -32,6 +32,9 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('panel')" :active="route().current('panel')">
                                     Panel
                                 </NavLink>
+                                <NavLink :href="route('cloudflare-accounts.index')" :active="route().current('cloudflare-accounts.index')">
+                                    Cloudflare
+                                </NavLink>
                             </div>
                         </div>
 
@@ -114,6 +117,9 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('panel')" :active="route().current('panel')">
                             panel
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('cloudflare-accounts.index')" :active="route().current('cloudflare-accounts.index')">
+                            Cloudflare
                         </ResponsiveNavLink>
                     </div>
 

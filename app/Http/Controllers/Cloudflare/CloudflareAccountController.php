@@ -2,19 +2,30 @@
 
 namespace App\Http\Controllers\Cloudflare;
 
-use Illuminate\Http\Request;
-use App\Models\CloudflareAccount;
 use App\Http\Controllers\Controller;
+use App\Models\CloudflareAccount;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Inertia\Inertia;
 class CloudflareAccountController extends Controller
 {
+    // Отобразить список всех аккаунтов Cloudflare для текущего пользователя
     public function index()
     {
         $accounts = Auth::user()->cloudflareAccounts;
-        return response()->json($accounts);
+
+        return Inertia::render('Cloudflare/Index', [
+            'accounts' => $accounts
+        ]);
     }
 
+    // Отобразить форму для создания нового аккаунта
+    public function create()
+    {
+        return Inertia::render('Cloudflare/Create');
+    }
+
+    // Сохранить новый аккаунт в базе данных
     public function store(Request $request)
     {
         $request->validate([
@@ -23,23 +34,52 @@ class CloudflareAccountController extends Controller
             'api_key' => 'required|string|max:255',
         ]);
 
-        $account = Auth::user()->cloudflareAccounts()->create($request->all());
+        Auth::user()->cloudflareAccounts()->create($request->all());
 
-        return response()->json($account, 201);
+        return redirect()->route('cloudflare-accounts.index')->with('success', 'Account added successfully.');
     }
 
+    // Отобразить детали конкретного аккаунта
     public function show($id)
     {
         $account = CloudflareAccount::findOrFail($id);
 
-        return response()->json($account);
+        return Inertia::render('Cloudflare/Show', [
+            'account' => $account
+        ]);
     }
 
+    // Отобразить форму для редактирования аккаунта
+    public function edit($id)
+    {
+        $account = CloudflareAccount::findOrFail($id);
+
+        return Inertia::render('Cloudflare/Edit', [
+            'account' => $account
+        ]);
+    }
+
+    // Обновить данные аккаунта в базе данных
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'api_key' => 'required|string|max:255',
+        ]);
+
+        $account = CloudflareAccount::findOrFail($id);
+        $account->update($request->all());
+
+        return redirect()->route('cloudflare-accounts.index')->with('success', 'Account updated successfully.');
+    }
+
+    // Удалить аккаунт из базы данных
     public function destroy($id)
     {
         $account = CloudflareAccount::findOrFail($id);
         $account->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('cloudflare-accounts.index')->with('success', 'Account deleted successfully.');
     }
 }
