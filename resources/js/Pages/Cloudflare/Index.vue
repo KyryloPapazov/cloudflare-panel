@@ -71,7 +71,7 @@ export default {
                                     Edit
                                 </a>
                                 <a :href="route('cloudflare-accounts.show', account.id)"
-                                   class="flex  mr-5 text-green-500 border-r border-l pr-2">
+                                   class="flex  mr-5 text-green-500 pr-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"

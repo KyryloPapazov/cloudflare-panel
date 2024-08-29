@@ -1,10 +1,11 @@
 <script>
 import {useForm} from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import NavLink from "@/Components/NavLink.vue";
 
 
 export default {
-    components: {AuthenticatedLayout},
+    components: {NavLink, AuthenticatedLayout},
     setup() {
         const form = useForm({
             name: '',
@@ -27,7 +28,7 @@ export default {
 }
 
 .btn {
-    @apply inline-block px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    @apply inline-block px-4 py-2 bg-red-700 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
 }
 </style>
 
@@ -52,6 +53,7 @@ export default {
                                required/>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Account</button>
+                    <NavLink class="ml-3 h-12" :href="route('cloudflare-accounts.index')">Cancel</NavLink>
                 </form>
             </div>
         </div>

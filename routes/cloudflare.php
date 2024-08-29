@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Cloudflare\CloudflareAccountController;
+use App\Http\Controllers\Cloudflare\DomainController;
+use App\Http\Controllers\Cloudflare\PageRuleController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
@@ -25,4 +27,9 @@ Route::middleware(['auth'])->group(function () {
     // Маршрут для удаления аккаунта
     Route::delete('/cloudflare-accounts/{id}', [CloudflareAccountController::class, 'destroy'])
         ->name('cloudflare-accounts.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('cloudflare-accounts.domains', DomainController::class);
+    Route::resource('domains.page-rules', PageRuleController::class);
 });
