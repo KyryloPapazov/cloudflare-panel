@@ -6,9 +6,30 @@ use App\Http\Controllers\Controller;
 use App\Models\CloudflareAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 class CloudflareAccountController extends Controller
 {
+    protected $apiToken;
+
+    public function __construct()
+    {
+        $this->apiToken = env('CLOUDFLARE_API_KEY');
+
+    }
+
+    public function getZones()
+    {
+        $response = Http::withToken($this->apiToken)
+            ->get('https://api.cloudflare.com/client/v4/zones');
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+
+        return response()->json(['error' => 'Failed to fetch zones'], 500);
+    }
+
     // Отобразить список всех аккаунтов Cloudflare для текущего пользователя
     public function index()
     {

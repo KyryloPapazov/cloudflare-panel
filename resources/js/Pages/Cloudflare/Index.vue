@@ -52,6 +52,7 @@ export default {
                     <tr class="w-full text-center text-amber-500 bg-blue-200">
                         <th class="px-4 py-5 border">Name</th>
                         <th class="px-4 py-5 border">Email</th>
+                        <th class="px-4 py-5 border">Domains</th>
                         <th class="px-4 py-5 border">Actions</th>
                     </tr>
                     </thead>
@@ -59,6 +60,9 @@ export default {
                     <tr v-for="account in accounts" :key="account.id" class="border-t hover:bg-gray-100">
                         <td class="px-4 py-3 border">{{ account.name }}</td>
                         <td class="px-4 py-3 border">{{ account.email }}</td>
+                        <td class="px-4 py-3 border">
+                            <a :href="route('cloudflare-domains.index', account.id)"> Manage domains</a>
+                        </td>
                         <td class="px-4 py-3 flex space-x-2">
                             <div class="flex mx-auto">
                                 <a :href="route('cloudflare-accounts.edit', account.id)"

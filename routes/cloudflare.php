@@ -30,6 +30,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('cloudflare-accounts.domains', DomainController::class);
-    Route::resource('domains.page-rules', PageRuleController::class);
+    Route::get('domains/{id}', [DomainController::class, 'index'])->name('cloudflare-domains.index');
+    Route::get('domains/{id}/create', [DomainController::class, 'create'])->name('cloudflare-domains.create');
+    Route::post('domains/store', [DomainController::class, 'store'])->name('cloudflare-domains.store');
+    Route::get('domains/{id}/edit', [DomainController::class, 'edit'])->name('cloudflare-domains.edit');
+    Route::delete('domains/{id}/destroy', [DomainController::class, 'destroy'])->name('cloudflare-domains.destroy');
 });

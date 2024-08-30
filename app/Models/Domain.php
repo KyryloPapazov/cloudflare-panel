@@ -16,6 +16,8 @@ class Domain extends Model
         'cloudflare_account_id', // Внешний ключ, связывающий с аккаунтами
         'name',    // Имя аккаунта
         'status',   // Email аккаунта Cloudflare
+        'ssl_mode',
+        "cloudflare_zone_id"
     ];
 
     public function cloudflareAccount()
