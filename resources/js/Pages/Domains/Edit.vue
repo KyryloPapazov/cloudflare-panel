@@ -1,5 +1,4 @@
 <template>
-    <AuthenticatedLayout>
         <div>
             <h1>Edit Domain</h1>
             <form @submit.prevent="submit">
@@ -9,13 +8,13 @@
                         <option value="off">Off</option>
                         <option value="flexible">Flexible</option>
                         <option value="full">Full</option>
-                        <option value="full_strict">Full (Strict)</option>
+                        <option value="strict">Full (Strict)</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Update SSL Mode</button>
+                <button type="button" @click="$emit('close')" class="btn btn-secondary">Cancel</button>
             </form>
         </div>
-    </AuthenticatedLayout>
 </template>
 
 <script>
@@ -27,13 +26,17 @@ export default {
     props: {
         domain: Object,
     },
-    setup(props) {
+    setup(props, { emit }) {
         const form = useForm({
             ssl_mode: props.domain.ssl_mode,
         });
 
         function submit() {
-            form.put(route('domains.update', props.domain.id));
+            form.put(route('cloudflare-domains.update', props.domain.id), {
+                onSuccess: () => {
+                    emit('close');  // Закрываем модальное окно после успешного обновления
+                },
+            });
         }
 
         return { form, submit };

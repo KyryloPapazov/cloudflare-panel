@@ -14,30 +14,39 @@ class DomainController extends Controller
     // Показать список доменов
     public function index($id)
     {
-
-//        $domains = Domain::with('cloudflareAccount')->findOrFail($id);
-//        $domains = Domain::with('cloudflareAccount')->where('cloudflare_account_id', $id)->get();
         $account = CloudflareAccount::findOrFail($id);
 
-        $apiToken = $account->api_key;
-
-        $response = Http::withToken($apiToken)
+        // Получаем список всех зон (доменов) из Cloudflare
+        $response = Http::withToken($account->api_key)
             ->get('https://api.cloudflare.com/client/v4/zones');
 
-
+        // Проверяем успешность запроса
         if ($response->successful()) {
             $zones = $response->json()['result']; // Получаем результат
-            var_dump($zones);
 
             // Обновляем информацию о доменах в базе данных
             foreach ($zones as $zone) {
+                // Делаем дополнительный запрос, чтобы получить SSL настройки для каждой зоны
+                $sslResponse = Http::withToken($account->api_key)
+                    ->get("https://api.cloudflare.com/client/v4/zones/{$zone['id']}/settings/ssl");
+
+                // Проверяем успешность запроса для SSL
+                $sslMode = 'off'; // Значение по умолчанию
+                if ($sslResponse->successful()) {
+                    $sslMode = $sslResponse->json()['result']['value'] ?? 'off';
+                } else {
+                    // Логгирование ошибки или обработка случая, если запрос не удался
+                    print_r("error_not_succes_SSL_response");
+                    die();
+                }
+
+                // Обновление или создание записи о домене
                 Domain::updateOrCreate(
-                    ['cloudflare_account_id' => $account->id, 'name' => $zone['name']], // Поиск по account_id и имени домена
+                    ['cloudflare_account_id' => $account->id, 'name' => $zone['name']],
                     [
                         'status' => $zone['status'],
-                        'cloudflare_zone_id' => $zone['id'], // Сохраняем cloudflare_zone_id
-                        'ssl_mode' => $zone['settings']['ssl']['value'] ?? 'off', // Получаем SSL режим
-
+                        'cloudflare_zone_id' => $zone['id'],
+                        'ssl_mode' => $sslMode, // Устанавливаем SSL режим
                     ]
                 );
             }
@@ -48,7 +57,6 @@ class DomainController extends Controller
             return Inertia::render('Domains/Index', [
                 'domains' => $domains,
                 'success' => 'Domains synchronized successfully.',
-
             ]);
         } else {
             // Если запрос не удался, передаем ошибку на страницу
@@ -61,11 +69,12 @@ class DomainController extends Controller
         }
     }
 
+
     // Форма для добавления нового домена
     public function create()
     {
 //        $accounts = CloudflareAccount::all()->where('user_id', 1)->get();
-        $accounts =  Auth::user()->cloudflareAccounts;
+        $accounts = Auth::user()->cloudflareAccounts;
 
         return Inertia::render('Domains/Create', [
             'accounts' => $accounts
@@ -75,6 +84,7 @@ class DomainController extends Controller
     // Сохранить новый домен в базе данных и на Cloudflare
     public function store(Request $request)
     {
+        echo $request;
 
         $request->validate([
             'cloudflare_account_id' => 'required|exists:cloudflare_accounts,id',
@@ -88,40 +98,34 @@ class DomainController extends Controller
                 'name' => $request->name,
 //                'account' => ['id' => $account->id],
             ]);
-        var_dump($response->json());
-        $response = Http::withToken($account->api_key)
-            ->get("https://api.cloudflare.com/client/v4/zones");
-        var_dump($response->json());
+        echo $request;
+
+//        $response = Http::withToken($account->api_key)
+//            ->get("https://api.cloudflare.com/client/v4/zones");
+//        var_dump($response->json());
 
         if ($response->successful()) {
-            $data = $response->json();
-            Domain::create([
-                'cloudflare_account_id' => $account->id,
-                'name' => $data['result']['name'],
-                'status' => $data['result']['status'],
-            ]);
-
-            return redirect()->route('domains.index')->with('success', 'Domain added successfully.');
+            return redirect()->route('cloudflare-domains.index', $account->id)->with('success', 'Domain added successfully.');
         } else {
             return redirect()->back()->with('error', 'Failed to add domain.');
         }
     }
 
     // Показать форму для редактирования домена
-    public function edit($id)
-    {
-        $domain = Domain::findOrFail($id);
-
-        return Inertia::render('Domains/Edit', [
-            'domain' => $domain
-        ]);
-    }
+//    public function edit($id)
+//    {
+//        $domain = Domain::findOrFail($id);
+//
+//        return Inertia::render('Domains/Edit', [
+//            'domain' => $domain
+//        ]);
+//    }
 
     // Обновить режим SSL/TLS для домена
     public function update(Request $request, $id)
     {
         $request->validate([
-            'ssl_mode' => 'required|in:off,flexible,full,full_strict',
+            'ssl_mode' => 'required|in:off,flexible,full,strict',
         ]);
 
         $domain = Domain::findOrFail($id);
@@ -136,7 +140,7 @@ class DomainController extends Controller
             $domain->ssl_mode = $request->ssl_mode;
             $domain->save();
 
-            return redirect()->route('domains.index')->with('success', 'SSL/TLS mode updated successfully.');
+            return redirect()->route('cloudflare-domains.index', $account->id)->with('success', 'SSL/TLS mode updated successfully.');
         } else {
             return redirect()->back()->with('error', 'Failed to update SSL/TLS mode.');
         }
@@ -149,9 +153,6 @@ class DomainController extends Controller
         $domain = Domain::findOrFail($id);
         $account = $domain->cloudflareAccount;
 
-        // Выводим значения для отладки
-        var_dump("API Key: ", $account->api_key);
-        var_dump("Zone ID: ", $domain->cloudflare_zone_id);
 
         $response = Http::withToken($account->api_key)
             ->delete("https://api.cloudflare.com/client/v4/zones/{$domain->cloudflare_zone_id}");
@@ -160,12 +161,12 @@ class DomainController extends Controller
         // Проверяем успешность запроса
         if ($response->successful()) {
             $domain->delete(); // Удаляем домен из базы данных
-            return redirect()->route('domains.index')->with('success', 'Domain deleted successfully.');
+            return redirect()->route('cloudflare-domains.index', $id)->with('success', 'Domain deleted successfully.');
         } else {
             // Если запрос не удался, выводим сообщение об ошибке
             return redirect()->back()->with('error', 'Failed to delete domain.');
         }
     }
 
-    }
+}
 

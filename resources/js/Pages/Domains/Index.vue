@@ -35,21 +35,22 @@
                     <td class="px-4 py-3 border">{{ domain.status }}</td>
                     <td class="px-4 py-3 border">{{ domain.ssl_mode }}</td>
                     <td class="px-4 py-3">
-                        <NavLink :href="route('cloudflare-domains.edit', domain.id)" class="btn btn-info">Edit</NavLink>
+                        <NavLink :href="route('domains.pagerules.index', domain.id)" class="btn btn-info">PageRules</NavLink>
+                        <button @click="openEditModal(domain)" class="btn btn-info">Edit</button>
                         <button @click="deleteDomain(domain.id)" class="btn btn-danger">Delete</button>
+
                     </td>
                 </tr>
                 </tbody>
             </table>
+            <!-- Модальное окно для редактирования SSL -->
+            <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                    <EditDomain :domain="selectedDomain" @close="closeEditModal" />
+                </div>
+            </div>
+
         </div>
-<!--        <div class="flex space-x-4 mt-6">-->
-<!--            <button @click="triggerSuccess" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">-->
-<!--                Триггер успеха-->
-<!--            </button>-->
-<!--            <button @click="triggerError" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">-->
-<!--                Триггер ошибки-->
-<!--            </button>-->
-<!--        </div>-->
     </AuthenticatedLayout>
 </template>
 
@@ -57,15 +58,23 @@
 import { useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
+import EditDomain from "@/Pages/Domains/Edit.vue";
+
 
 
 export default {
 
-    components: {AuthenticatedLayout, NavLink },
+    components: {AuthenticatedLayout, NavLink, EditDomain },
     props: {
         domains: Array,
         success: String,
         error: String,
+    },
+    data() {
+        return {
+            isModalOpen: false,
+            selectedDomain: null,
+        };
     },
     setup() {
         const form = useForm({});
@@ -82,5 +91,28 @@ export default {
             deleteDomain,
         };
     },
+    methods: {
+        openEditModal(domain) {
+            this.selectedDomain = domain;  // Устанавливаем выбранный домен
+            this.isModalOpen = true;  // Открываем модальное окно
+        },
+        closeEditModal() {
+            this.isModalOpen = false;  // Закрываем модальное окно
+            this.selectedDomain = null;  // Очищаем выбранный домен
+        },
+
+    },
 };
 </script>
+
+<style>
+/* Стили для модального окна */
+.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+}
+</style>

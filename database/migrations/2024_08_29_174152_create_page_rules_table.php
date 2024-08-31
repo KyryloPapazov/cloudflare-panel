@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('pageRule', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('domain_id');
-            $table->string('rule_name');
-            $table->json('rule_settings');
+            $table->foreignId('domain_id')->constrained()->onDelete('cascade');  // Ссылка на домен
+            $table->string('target_url');  // Целевой URL для правила
+            $table->json('actions');  // JSON поле для хранения действий правила
+            $table->string('status')->default('active');  // Статус правила
+            $table->string('cloudflare_rule_id')->nullable();  // ID правила в Cloudflare
             $table->timestamps();
-
-            $table->foreign('domain_id')->references('id')->on('domain')->onDelete('cascade');
         });
     }
 

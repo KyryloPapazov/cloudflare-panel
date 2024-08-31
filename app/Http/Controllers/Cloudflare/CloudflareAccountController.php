@@ -10,14 +10,6 @@ use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 class CloudflareAccountController extends Controller
 {
-    protected $apiToken;
-
-    public function __construct()
-    {
-        $this->apiToken = env('CLOUDFLARE_API_KEY');
-
-    }
-
     public function getZones()
     {
         $response = Http::withToken($this->apiToken)
@@ -55,9 +47,17 @@ class CloudflareAccountController extends Controller
             'api_key' => 'required|string|max:255',
         ]);
 
-        Auth::user()->cloudflareAccounts()->create($request->all());
+        $response = Http::withToken($request['api_key'])
+            ->get('https://api.cloudflare.com/client/v4/zones');
 
-        return redirect()->route('cloudflare-accounts.index')->with('success', 'Account added successfully.');
+        if ($response->successful()) {
+            Auth::user()->cloudflareAccounts()->create($request->all());
+
+            return redirect()->route('cloudflare-accounts.index')->with('success', 'Account added successfully.');
+        }
+        session()->flash('error', 'Failed to add accounts, please check your API key in https://dash.cloudflare.com/profile/api-tokens.');
+        return redirect()->route('cloudflare-accounts.create');
+
     }
 
     // Отобразить детали конкретного аккаунта

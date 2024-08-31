@@ -9,14 +9,19 @@ class PageRule extends Model
 {
     use HasFactory;
 
-    protected $table = 'PageRule';
+    protected $table = 'pageRule';
 
     protected $fillable = [
         'domain_id',
-        'rule_name',
-        'rule_settings',
+        'target_url',
+        'actions',
+        'status',
+        'cloudflare_rule_id',
     ];
 
+    protected $casts = [
+        'actions' => 'array',  // Преобразование JSON в массив
+    ];
     public function domain()
     {
         return $this->belongsTo(Domain::class);

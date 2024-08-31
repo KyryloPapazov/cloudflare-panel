@@ -9,7 +9,7 @@ class Domain extends Model
 {
     use HasFactory;
 
-    protected $table = 'domain';
+    protected $table = 'domains';
 
     // Указываем, какие поля можно массово заполнять
     protected $fillable = [

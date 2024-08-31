@@ -1,6 +1,7 @@
 <script>
 import NavLink from "@/Components/NavLink.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+
 export default {
     components: {AuthenticatedLayout, NavLink},
     props: {
@@ -20,18 +21,14 @@ export default {
 </style>
 
 <template>
-    <AuthenticatedLayout>
     <div class="container mx-auto px-4 py-8">
         <div class="bg-white shadow-md rounded-lg p-6">
             <h1 class="text-2xl font-medium text-gray-800 mb-4">Account Details</h1>
             <p class="mb-2"><strong>Name:</strong> {{ account.name }}</p>
             <p class="mb-2"><strong>Email:</strong> {{ account.email }}</p>
             <p class="mb-4"><strong>API Key:</strong> {{ account.api_key }}</p>
-            <NavLink :href="route('cloudflare-accounts.index')" class="btn btn-secondary">
-                Back
-            </NavLink>
+            <button type="button" @click="$emit('close')" class="btn btn-secondary">Cancel</button>
 
         </div>
     </div>
-    </AuthenticatedLayout>
 </template>

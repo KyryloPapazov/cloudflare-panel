@@ -2,11 +2,19 @@
 import {useForm} from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
+import ShowAccount from "@/Pages/Cloudflare/Show.vue";
+
 
 export default {
-    components: {NavLink, AuthenticatedLayout},
+    components: {ShowAccount, NavLink, AuthenticatedLayout},
     props: {
         accounts: Array,
+    },
+    data() {
+        return {
+            isModalOpen: false,
+            selectedAccount: null,
+        };
     },
     setup() {
 
@@ -26,10 +34,32 @@ export default {
         return {
             deleteAccount,
         };
-    }
+    },
+    methods: {
+        openShowModal(account) {
+            this.selectedAccount = account;  // Устанавливаем выбранный account
+            this.isModalOpen = true;  // Открываем модальное окно
+        },
+        closeShowModal() {
+            this.isModalOpen = false;  // Закрываем модальное окно
+            this.selectedAccount = null;  // Очищаем выбранный домен
+        },
+
+    },
 
 };
 </script>
+<style>
+/* Стили для модального окна */
+.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+}
+</style>
 
 <template>
     <AuthenticatedLayout>
@@ -74,7 +104,7 @@ export default {
                                     </svg>
                                     Edit
                                 </a>
-                                <a :href="route('cloudflare-accounts.show', account.id)"
+                                <a @click="openShowModal(account)"
                                    class="flex  mr-5 text-green-500 pr-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -100,6 +130,11 @@ export default {
                 </table>
             </div>
         </div>
-
+        <!-- Модальное окно для show details -->
+        <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                <ShowAccount :account="selectedAccount" @close="closeShowModal" />
+            </div>
+        </div>
     </AuthenticatedLayout>
 </template>

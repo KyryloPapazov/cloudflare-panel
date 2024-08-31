@@ -10,11 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('domain', function (Blueprint $table) {
+        Schema::create('domains', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cloudflare_account_id');
             $table->string('name');
             $table->string('status');
+            $table->string('cloudflare_zone_id')->nullable();
+            $table->enum('ssl_mode', ['off', 'flexible', 'full', 'strict'])->default('off');
             $table->timestamps();
 
 
@@ -28,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('domain');
+        Schema::dropIfExists('domains');
     }
 };
