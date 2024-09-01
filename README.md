@@ -1,66 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1>This is web application for manage cloudflare accounts, domains and Page rules</h1>
+<p>This project create in Laravel v11.21.0 (PHP v8.3.10)</p> <br>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+ <p>for install this application into your machine, you must have:</p>
+            <ul>ubuntu with <a href="https://www.digitalocean.com/community/tutorials/how-to-install-lamp-stack-on-ubuntu"></a> LAMP or :
+                <li> <a href="https://www.geeksforgeeks.org/how-to-install-php-on-ubuntu/">PHP version 8.1+ </a> (<span style="color: red;">tutorial in link</span> )</li>
+                <li> <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-composer-on-ubuntu-20-04">Composer </a>(<span style="color: red;">tutorial in link</span> ) </li>
+                <li> <a href="https://www.digitalocean.com/community/tutorials/how-to-install-node-js-and-create-a-local-development-environment-on-windows">Node.js </a>(<span style="color: red;">tutorial in link</span> ) </li>
+                <li> <a href="https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-22-04">any relational database </a> (<span style="color: red;">I used MySQL with MySQL Workbench - not necessarily</span> ) </li>
+                <li> <a href="https://git-scm.com/downloads">Git </a> (<span style="color: red;">Link</span> ) </li>
+            </ul>
+            <ul>windows with <a href="https://github.com/OSPanel/OpenServerPanel/wiki/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F">Open Server</a> or:
+                <li> <a href="https://www.geeksforgeeks.org/how-to-install-php-in-windows-10/">PHP version 8.1+ </a> (<span style="color: red;">tutorial in link</span> )</li>
+                <li> <a href="https://www.geeksforgeeks.org/how-to-install-php-composer-on-windows/">Composer</a>  (<span style="color: red;">tutorial in link</span> )</li>
+                <li> <a href="https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-22-04">Node.js </a>(<span style="color: red;">tutorial in link</span> ) </li>
+                <li> <a href="https://www.geeksforgeeks.org/how-to-install-mysql-in-windows/">any relational database</a> (<span style="color: red;">I used MySQL with MySQL Workbench - not necessarily</span> ) </li>
+                <li> <a href="https://git-scm.com/downloads">Git</a> (<span style="color: red;">Link</span> ) </li>
+            </ul>
+            <h2>If this has already been established, you can start cloning the project</h2>
+            <p>This is link for clone my Git repository: <a href="https://github.com/KyryloPapazov/cloudflare-panel.git">https://github.com/KyryloPapazov/cloudflare-panel.git</a></p> 
 
-## About Laravel
+            <h1>Install into windows</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+            <h3>1. Create and go to directory for project</h3>
+            <p>Open terminal into windows(win + r -> cmd.exe) and run command:</p>
+            <p><b>important!</b> you you need to know which folder you are working in and set it to the right one.(<span style="color: red;">NOT SYSTEM32!</span>)</p>
+            <address>mkdir name_project</address> 
+            <p>and go to new directory</p>
+            <address>cd name_project</address> 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+            <h3>2. Make git clone repository</h3>
+            <address>git clone https://github.com/KyryloPapazov/cloudflare-panel.git</address> 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+            <h3>3. After cloning need go to direcrory cloudflare-panel and install relationships</h3>
+            <address>cd cloudflare-panel</address> 
+            <address>npm install</address> 
+            <address>composer install</address> 
+            <p>If you get an error, check if php with its dependencies and npm are installed</p>
+            <p>Maybe in cmd the commands won't work, try using powershell to perform these steps</p>
 
-## Learning Laravel
+            <h3>4. after downloading the dependencies, you need to create an .env file</h3>
+            <address>php artisan key:generate</address>
+            <p>If not complete generate APP KEY and .env file </p>
+            <label>Copy file to .env</label>
+            <address>cp .env.example .env</address> 
+            <br>
+            <label>Gen APP KEY </label>
+            <address>php artisan key:generate</address> 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+            <h3>5. Connect to DataBase in .env</h3>
+            <address>DB_CONNECTION=sqlite #mysql</address>
+            <p>If DB not SQLite, fill in the following fields</p>
+            <address>#DB_HOST=127.0.0.1 </address>
+            <address>#DB_PORT=</address>
+            <address>#DB_DATABASE=</address>
+            <address>#DB_USERNAME=</address>
+            <address>#DB_PASSWORD=</address>
+            
+            <h3>6. Run migrations</h3>
+            <address>php artisan migrate</address>
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+            <h3>7. If previous steps full completed, have to run servers for laravel and vue.js</h3>
+            <p>For this run commands in directory project(your/path/cloudflare-panel):</p>
+            <label>run server vue.js</label>
+            <address>npm run dev</address> 
+            <label>run server laravel</label>
+            <address>php artisan serve</address> 
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+            <h1>Good Work! In <a href="http://localhost:8000">www.localhost:8000</a> my project</h3>
 
-### Premium Partners
+            <h1>Install into ubuntu</h1>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+            <h3>1. Create and go to directory for project</h3>
+            <p>Open terminal into windows(CTRL+ALT+T) and run command:</p>
+            <p><b>important!</b> you you need to know which folder you are working in and set it to the right one.</p>
+            <p><b>important!</b> you may have to use “<span style="color: red;">sudo</span>”, use it carefully!.</p>
+            <address>mkdir name_project</address> 
+            <p>and go to new directory</p>
+            <address>cd name_project</address> 
 
-## Contributing
+            <h3>2. Make git clone repository</h3>
+            <address>git clone https://github.com/KyryloPapazov/cloudflare-panel.git</address> 
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+            <h3>3. After cloning need go to direcrory cloudflare-panel and install relationships</h3>
+            <address>cd cloudflare-panel</address> 
+            <br>
+            <address>npm install</address> 
+            <br>
+            <address>composer install</address> 
+            <p>If you get an error, check if php with its dependencies and npm are installed</p>
+            <p>Maybe in cmd the commands won't work, try using powershell to perform these steps</p>
 
-## Code of Conduct
+            <h3>4. after downloading the dependencies, you need to create an .env file</h3>
+            <address>php artisan key:generate</address>
+            <p>If not complete generate APP KEY and .env file </p>
+            <label>Copy file to .env</label>
+            <address>cp .env.example .env</address> 
+            <br>
+            <label>Gen APP KEY </label>
+            <address>php artisan key:generate</address> 
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+            <h3>5. Connect to DataBase in .env</h3>
+            <address>DB_CONNECTION=sqlite #mysql</address>
+            <p>If DB not SQLite, fill in the following fields</p>
+            <address>#DB_HOST=127.0.0.1 </address>
+            <address>#DB_PORT=</address>
+            <address>#DB_DATABASE=</address>
+            <address>#DB_USERNAME=</address>
+            <address>#DB_PASSWORD=</address>
+            
+            <h3>6. Run migrations</h3>
+            <address>php artisan migrate</address>
+           
+            <h3>7. If previous steps full completed, have to run servers for laravel and vue.js</h3>
+            <p>For this run commands in directory project(your/path/cloudflare-panel):</p>
+            <label>run server vue.js</label>
+            <address>npm run dev</address> 
+            <p></p>
+            <label>run server laravel</label>
+            <address>php artisan serve</address> 
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+            <h1>Good Work! In <a href="http://localhost:8000">www.localhost:8000</a> my project</h3>
