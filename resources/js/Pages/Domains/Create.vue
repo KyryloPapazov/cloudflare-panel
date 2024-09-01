@@ -1,6 +1,6 @@
 
 <script>
-import {useForm} from '@inertiajs/vue3';
+import {useForm, Head} from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
 
@@ -8,7 +8,7 @@ import NavLink from "@/Components/NavLink.vue";
 
 export default {
 
-    components: {NavLink, AuthenticatedLayout},
+    components: {NavLink, AuthenticatedLayout, Head},
     props: {
         accounts: Array,
         success: String,
@@ -38,6 +38,7 @@ export default {
 </script>
 
 <template>
+    <Head title="Create Domain" />
     <AuthenticatedLayout>
 
         <!-- Отображение сообщений об успехе и ошибках -->

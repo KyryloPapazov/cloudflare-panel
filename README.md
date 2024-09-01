@@ -1,7 +1,8 @@
 # Web Application for Managing Cloudflare Accounts, Domains, and Page Rules
 
 This project is created using Laravel v11.21.0 (PHP v8.3.10).
-
+### login: admin
+### password: admin
 ## Installation Requirements
 
 ### For Ubuntu:
@@ -101,7 +102,7 @@ If not using SQLite, fill in the following fields:
 ### 6. Run Migrations
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
 ### 7. Run Servers for Laravel and Vue.js
@@ -120,7 +121,9 @@ Run these commands in the project directory (`your/path/cloudflare-panel`):
   php artisan serve
   ```
 
-Visit the project at [http://localhost:8000](http://localhost:8000).
+### Visit the project at [http://localhost:8000](http://localhost:8000).
+### login: admin
+### password: admin
 
 ## Installation on Ubuntu
 
@@ -190,7 +193,7 @@ If not using SQLite, fill in the following fields:
 ### 6. Run Migrations
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
 ### 7. Run Servers for Laravel and Vue.js
@@ -209,4 +212,6 @@ Run these commands in the project directory (`your/path/cloudflare-panel`):
   php artisan serve
   ```
 
-Visit the project at [http://localhost:8000](http://localhost:8000).
+### Visit the project at [http://localhost:8000](http://localhost:8000). 
+### login: admin
+### password: admin

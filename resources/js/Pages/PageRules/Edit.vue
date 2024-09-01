@@ -1,4 +1,5 @@
 <template>
+    <Head title="Edit Rules" />
     <AuthenticatedLayout>
         <div class="max-w-3xl mx-auto mt-10">
             <h1 class="text-2xl font-bold mb-6">Edit Page Rule for {{ domain.name }}</h1>
@@ -70,12 +71,12 @@
 </template>
 
 <script>
-import { useForm } from '@inertiajs/vue3';
+import {Head, useForm} from '@inertiajs/vue3';
 import { ref } from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 export default {
-    components: { AuthenticatedLayout },
+    components: {Head, AuthenticatedLayout },
     props: {
         domain: Object,
         pageRule: Object,

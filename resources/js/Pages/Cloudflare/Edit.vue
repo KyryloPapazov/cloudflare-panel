@@ -9,6 +9,7 @@
 }
 </style>
 <template>
+    <Head title="Edit Account" />
     <AuthenticatedLayout>
     <div class="container mx-auto px-4 py-8">
         <div class="bg-white shadow-md rounded-lg p-6">
@@ -35,12 +36,12 @@
 </template>
 
 <script>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
 
 export default {
-    components: {NavLink, AuthenticatedLayout},
+    components: {NavLink, AuthenticatedLayout, Head},
     props: {
         account: Object,
     },

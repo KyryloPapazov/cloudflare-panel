@@ -1,4 +1,5 @@
 <template>
+    <Head title="Domains" />
     <AuthenticatedLayout>
         <div class="container mx-auto p-6 m-6 bg-white rounded-lg shadow-md">
 
@@ -14,9 +15,11 @@
                     </svg>
                 </NavLink>
             </div>
-
+            <div v-if="domains.length === 0" class="text-center p-6">
+                <p class="text-xl text-gray-700">No domains available. Please create one.</p>
+            </div>
             <!-- Table for managing domains -->
-            <div class="overflow-x-auto">
+            <div v-else class="overflow-x-auto">
                 <table class="w-11/12 mx-auto bg-white shadow-md rounded-lg">
                     <thead>
                     <tr class="text-center text-amber-500 bg-blue-200">
@@ -33,7 +36,7 @@
                         <td class="px-4 py-3 border">{{ domain.cloudflare_account.name }} ({{ domain.cloudflare_account.email }})</td>
                         <td class="px-4 py-3 border">{{ domain.status }}</td>
                         <td class="px-4 py-3 border">{{ domain.ssl_mode }}</td>
-                        <td class="px-4 py-3 flex justify-center space-x-4">
+                        <td class="px-4 py-3 flex justify-center border-b space-x-4">
                             <NavLink :href="route('domains.pagerules.index', domain.id)" class="text-blue-500 hover:underline">PageRules</NavLink>
                             <button @click="openEditModal(domain)" class="text-yellow-500 hover:underline">Edit</button>
                             <button @click="deleteDomain(domain.id)" class="flex text-red-500 hover:underline">
@@ -61,7 +64,7 @@
 
 
 <script>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
 import EditDomain from "@/Pages/Domains/Edit.vue";
@@ -69,8 +72,7 @@ import EditDomain from "@/Pages/Domains/Edit.vue";
 
 
 export default {
-
-    components: {AuthenticatedLayout, NavLink, EditDomain },
+    components: {AuthenticatedLayout, NavLink, EditDomain, Head },
     props: {
         domains: Array,
         success: String,
@@ -87,9 +89,7 @@ export default {
 
         function deleteDomain(id) {
             if (confirm('Are you sure you want to delete this domain?')) {
-                form.delete(route('cloudflare-domains.destroy', id), {
-                    onFinish: () => window.location.reload(),
-                });
+                form.delete(route('cloudflare-domains.destroy', id));
             }
         }
 

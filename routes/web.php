@@ -15,7 +15,7 @@ Route::get('/', function () {
 });
 
 Route::get('/panel', function () {
-    return Inertia::render('Panel');
+    return Inertia::render('Cloudflare/Index');
 })->middleware(['auth', 'verified'])->name('panel');
 
 Route::middleware('auth')->group(function () {

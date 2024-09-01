@@ -1,12 +1,12 @@
 <script>
-import {useForm} from '@inertiajs/vue3';
+import {useForm, Head} from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
 import ShowAccount from "@/Pages/Cloudflare/Show.vue";
 
 
 export default {
-    components: {ShowAccount, NavLink, AuthenticatedLayout},
+    components: {ShowAccount, NavLink, AuthenticatedLayout, Head},
     props: {
         accounts: Array,
     },
@@ -62,6 +62,7 @@ export default {
 </style>
 
 <template>
+    <Head title="Accounts" />
     <AuthenticatedLayout>
         <div class="container mx-auto p-6 m-6 bg-white rounded-lg shadow-md">
             <div class="flex justify-between items-center mb-4">
@@ -75,8 +76,10 @@ export default {
                     </svg>
                 </NavLink>
             </div>
-
-            <div class="overflow-x-auto">
+            <div v-if="accounts.length === 0" class="text-center p-6">
+                <p class="text-xl text-gray-700">No accounts available. Please create one.</p>
+            </div>
+            <div v-else class="overflow-x-auto">
                 <table class="w-11/12 mx-auto bg-white shadow-md rounded-lg">
                     <thead>
                     <tr class="w-full text-center text-amber-500 bg-blue-200">
@@ -93,7 +96,7 @@ export default {
                         <td class="px-4 py-3 border text-center hover:bg-gray-100">
                             <a :href="route('cloudflare-domains.index', account.id)"> Manage domains</a>
                         </td>
-                        <td class="px-4 py-3 flex space-x-2">
+                        <td class="px-4 py-3 flex border-b space-x-2">
                             <div class="flex mx-auto">
                                 <a :href="route('cloudflare-accounts.edit', account.id)"
                                    class="flex mr-5 text-blue-500 pr-2">

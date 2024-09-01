@@ -1,5 +1,6 @@
 <!-- resources/js/Pages/PageRules/Index.vue -->
 <template>
+    <Head title="Page Rules" />
     <AuthenticatedLayout>
         <div class="container mx-auto p-6 m-6 bg-white rounded-lg shadow-md">
             <div class="flex justify-between items-center ">
@@ -12,7 +13,12 @@
                     Add Page Rule
                 </NavLink>
             </div>
-            <div class="overflow-x-auto">
+
+            <div v-if="pageRules.length === 0" class="text-center p-6">
+                <p class="text-xl text-gray-700">No page rules available. Please create one.</p>
+            </div>
+
+            <div v-else class="overflow-x-auto">
                 <!-- Page Rules Table -->
                 <table class="w-11/12 mx-auto bg-white shadow-md rounded-lg">
                     <thead>
@@ -81,9 +87,10 @@
 import {useForm} from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
+import { Head } from '@inertiajs/vue3';
 
 export default {
-    components: {AuthenticatedLayout, NavLink},
+    components: {AuthenticatedLayout, NavLink, Head},
     props: {
         domain: Object,
         pageRules: Array,
@@ -113,8 +120,9 @@ export default {
             const payload = {
                 status: rule.status,
                 target_url: rule.target_url, // Ensure this is the correct target URL
-                actions: rule.actions // Ensure this includes the correct actions
+                 actions: Array.isArray(rule.actions) && rule.actions.length > 0 ? rule.actions : null  // Ensure this includes the correct actions
             };
+
 
             // Make an Axios PUT request to update the page rule
             axios.put(route('domains.pagerules.update', {domainId: domain.id, ruleId: rule.id}), payload);
@@ -128,9 +136,7 @@ export default {
 
         function deleteRule(id) {
             if (confirm('Are you sure you want to delete this page rule?')) {
-                form.delete(route('pagerules.destroy', id), {
-                    onFinish: () => window.location.reload(),
-                });
+                form.delete(route('pagerules.destroy', id));
             }
         }
 

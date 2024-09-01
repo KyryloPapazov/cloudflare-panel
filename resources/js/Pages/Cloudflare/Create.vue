@@ -1,11 +1,11 @@
 <script>
-import {useForm} from '@inertiajs/vue3';
+import {Head, useForm} from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
 
 
 export default {
-    components: {NavLink, AuthenticatedLayout},
+    components: {Head, NavLink, AuthenticatedLayout},
     setup() {
         const form = useForm({
             name: '',
@@ -33,6 +33,7 @@ export default {
 </style>
 
 <template>
+    <Head title="Create Account" />
     <AuthenticatedLayout>
         <div class="container mx-auto px-4 py-8">
             <div class="bg-white shadow-md rounded-lg p-6">
