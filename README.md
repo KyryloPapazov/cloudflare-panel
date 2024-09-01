@@ -1,6 +1,9 @@
 # Web Application for Managing Cloudflare Accounts, Domains, and Page Rules
 
 This project is created using Laravel v11.21.0 (PHP v8.3.10).
+
+### installation on Windows may be different
+
 ### login: admin
 ### password: admin
 ## Installation Requirements
@@ -33,97 +36,6 @@ If these prerequisites are established, you can start cloning the project.
 
 Clone the Git repository:  
 [https://github.com/KyryloPapazov/cloudflare-panel.git](https://github.com/KyryloPapazov/cloudflare-panel.git)
-
-## Installation on Windows
-
-### 1. Create and Navigate to the Project Directory
-
-Open the terminal in Windows (Win + R -> cmd.exe) and run:
-
-```bash
-mkdir name_project
-cd name_project
-```
-
-> **Important:** Make sure you are working in the correct folder (not `SYSTEM32`).
-
-### 2. Clone the Repository
-
-```bash
-git clone https://github.com/KyryloPapazov/cloudflare-panel.git
-```
-
-### 3. Install Dependencies
-
-Navigate to the project directory and install the dependencies:
-
-```bash
-cd cloudflare-panel
-npm install
-composer install
-```
-
-> If you encounter errors, check if PHP, its dependencies, and npm are installed.  
-> If the commands don't work in cmd, try using PowerShell.
-
-### 4. Create an `.env` File
-
-Generate the APP key:
-
-```bash
-php artisan key:generate
-```
-
-If not complete, copy the `.env` file:
-
-```bash
-cp .env.example .env
-php artisan key:generate
-```
-
-### 5. Connect to the Database
-
-Configure the database connection in `.env`:
-
-```env
-DB_CONNECTION=sqlite #mysql
-```
-
-If not using SQLite, fill in the following fields:
-
-```env
-#DB_HOST=127.0.0.1 
-#DB_PORT=
-#DB_DATABASE=
-#DB_USERNAME=
-#DB_PASSWORD=
-```
-
-### 6. Run Migrations
-
-```bash
-php artisan migrate --seed
-```
-
-### 7. Run Servers for Laravel and Vue.js
-
-Run these commands in the project directory (`your/path/cloudflare-panel`):
-
-- Start Vue.js server:
-
-  ```bash
-  npm run dev
-  ```
-
-- Start Laravel server:
-
-  ```bash
-  php artisan serve
-  ```
-
-### Visit the project at [http://localhost:8000](http://localhost:8000).
-### login: admin
-### password: admin
 
 ## Installation on Ubuntu
 
