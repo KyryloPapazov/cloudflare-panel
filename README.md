@@ -18,26 +18,21 @@
             </ul>
             <h2>If this has already been established, you can start cloning the project</h2>
             <p>This is link for clone my Git repository: <a href="https://github.com/KyryloPapazov/cloudflare-panel.git">https://github.com/KyryloPapazov/cloudflare-panel.git</a></p> 
-
             <h1>Install into windows</h1>
-
             <h3>1. Create and go to directory for project</h3>
             <p>Open terminal into windows(win + r -> cmd.exe) and run command:</p>
-            <p><b>important!</b> you you need to know which folder you are working in and set it to the right one.(<span style="color: red;">NOT SYSTEM32!</span>)</p>
+            <p><b>important!</b> you need to know which folder you are working in and set it to the right one.(<span style="color: red;">NOT SYSTEM32!</span>)</p>
             <address>mkdir name_project</address> 
             <p>and go to new directory</p>
             <address>cd name_project</address> 
-
             <h3>2. Make git clone repository</h3>
             <address>git clone https://github.com/KyryloPapazov/cloudflare-panel.git</address> 
-
             <h3>3. After cloning need go to direcrory cloudflare-panel and install relationships</h3>
             <address>cd cloudflare-panel</address> 
             <address>npm install</address> 
             <address>composer install</address> 
             <p>If you get an error, check if php with its dependencies and npm are installed</p>
             <p>Maybe in cmd the commands won't work, try using powershell to perform these steps</p>
-
             <h3>4. after downloading the dependencies, you need to create an .env file</h3>
             <address>php artisan key:generate</address>
             <p>If not complete generate APP KEY and .env file </p>
@@ -46,7 +41,6 @@
             <br>
             <label>Gen APP KEY </label>
             <address>php artisan key:generate</address> 
-
             <h3>5. Connect to DataBase in .env</h3>
             <address>DB_CONNECTION=sqlite #mysql</address>
             <p>If DB not SQLite, fill in the following fields</p>
@@ -55,35 +49,26 @@
             <address>#DB_DATABASE=</address>
             <address>#DB_USERNAME=</address>
             <address>#DB_PASSWORD=</address>
-            
             <h3>6. Run migrations</h3>
             <address>php artisan migrate</address>
-
-
             <h3>7. If previous steps full completed, have to run servers for laravel and vue.js</h3>
             <p>For this run commands in directory project(your/path/cloudflare-panel):</p>
             <label>run server vue.js</label>
             <address>npm run dev</address> 
             <label>run server laravel</label>
             <address>php artisan serve</address> 
-
-
-            <h1>Good Work! In <a href="http://localhost:8000">www.localhost:8000</a> my project</h3>
-
+            <h1>Good Work! In <a href="http://localhost:8000">www.localhost:8000</a> my project</h1>
             <h1>Install into ubuntu</h1>
-
             <h3>1. Create and go to directory for project</h3>
             <p>Open terminal into windows(CTRL+ALT+T) and run command:</p>
-            <p><b>important!</b> you you need to know which folder you are working in and set it to the right one.</p>
+            <p><b>important!</b> you need to know which folder you are working in and set it to the right one.</p>
             <p><b>important!</b> you may have to use “<span style="color: red;">sudo</span>”, use it carefully!.</p>
             <address>mkdir name_project</address> 
             <p>and go to new directory</p>
             <address>cd name_project</address> 
-
             <h3>2. Make git clone repository</h3>
             <address>git clone https://github.com/KyryloPapazov/cloudflare-panel.git</address> 
-
-            <h3>3. After cloning need go to direcrory cloudflare-panel and install relationships</h3>
+            <h3>3. After cloning need go to directory cloudflare-panel and install relationships</h3>
             <address>cd cloudflare-panel</address> 
             <br>
             <address>npm install</address> 
@@ -91,7 +76,6 @@
             <address>composer install</address> 
             <p>If you get an error, check if php with its dependencies and npm are installed</p>
             <p>Maybe in cmd the commands won't work, try using powershell to perform these steps</p>
-
             <h3>4. after downloading the dependencies, you need to create an .env file</h3>
             <address>php artisan key:generate</address>
             <p>If not complete generate APP KEY and .env file </p>
@@ -100,7 +84,6 @@
             <br>
             <label>Gen APP KEY </label>
             <address>php artisan key:generate</address> 
-
             <h3>5. Connect to DataBase in .env</h3>
             <address>DB_CONNECTION=sqlite #mysql</address>
             <p>If DB not SQLite, fill in the following fields</p>
@@ -109,10 +92,8 @@
             <address>#DB_DATABASE=</address>
             <address>#DB_USERNAME=</address>
             <address>#DB_PASSWORD=</address>
-            
             <h3>6. Run migrations</h3>
             <address>php artisan migrate</address>
-           
             <h3>7. If previous steps full completed, have to run servers for laravel and vue.js</h3>
             <p>For this run commands in directory project(your/path/cloudflare-panel):</p>
             <label>run server vue.js</label>
@@ -120,6 +101,4 @@
             <p></p>
             <label>run server laravel</label>
             <address>php artisan serve</address> 
-
-
-            <h1>Good Work! In <a href="http://localhost:8000">www.localhost:8000</a> my project</h3>
+            <h1>Good Work! In <a href="http://localhost:8000">www.localhost:8000</a> my project</h1>
