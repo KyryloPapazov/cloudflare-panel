@@ -15,6 +15,11 @@ export default {
         error: String,
 
     },
+    methods: {
+        goBack() {
+            window.history.back();
+        }
+    },
 
     setup() {
         const form = useForm({
@@ -59,7 +64,8 @@ export default {
                 </div>
                 <div class="flex space-x-4 mt-6">
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Add Domain</button>
-                    <NavLink :href="route('cloudflare-accounts.index', )" class="text-gray-500 px-4 py-2 rounded-md hover:bg-gray-100 transition">Cancel</NavLink>
+                    <button type="button" @click="goBack" class="bg-gray-100 text-gray-700 py-2 px-4 rounded hover:bg-gray-200">Cancel</button>
+
                 </div>
             </form>
         </div>

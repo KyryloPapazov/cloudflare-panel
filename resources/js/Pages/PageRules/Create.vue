@@ -1,5 +1,6 @@
 <template>
     <AuthenticatedLayout>
+
         <div class="max-w-3xl mx-auto mt-10">
             <h1 class="text-2xl font-bold mb-6">Add Page Rule for {{ domain.name }}</h1>
             <form @submit.prevent="submit" class="bg-white p-6 rounded-lg shadow-md">
@@ -32,7 +33,6 @@
                     <!-- Disable Apps Settings -->
                     <div v-if="setting.settingType === 'Disable Apps'" class="mb-3">
                         <label class="block text-sm font-medium text-gray-700">Apps are disabled</label>
-<!--                        <p class="text-gray-500">Apps are disabled</p>-->
                     </div>
 
                     <!-- IP Geolocation Header Settings -->
@@ -54,7 +54,8 @@
                 <!-- Submit and Cancel Buttons -->
                 <div class="flex justify-between">
                     <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Add Page Rule</button>
-                    <button type="button" @click="$emit('close')" class="bg-gray-100 text-gray-700 py-2 px-4 rounded hover:bg-gray-200">Cancel</button>
+                    <button type="button" @click="goBack" class="bg-gray-100 text-gray-700 py-2 px-4 rounded hover:bg-gray-200">Cancel</button>
+
                 </div>
             </form>
         </div>
@@ -63,13 +64,18 @@
 
 <script>
 import { useForm } from '@inertiajs/vue3';
-import {ref} from "vue";
+import { ref } from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 export default {
-    components: {AuthenticatedLayout},
+    components: { AuthenticatedLayout },
     props: {
         domain: Object,
+    },
+    methods: {
+        goBack() {
+            window.history.back();
+        }
     },
     setup(props) {
         const form = useForm({
@@ -80,7 +86,7 @@ export default {
         const selectedSettings = ref([
             {
                 settingType: 'SSL',
-                ssl: 'Off',
+                ssl: 'off',
                 ipGeolocation: false,
             },
         ]);
@@ -88,7 +94,7 @@ export default {
         function addSetting() {
             selectedSettings.value.push({
                 settingType: 'SSL',
-                ssl: 'Off',
+                ssl: 'off',
                 ipGeolocation: false,
             });
         }
@@ -97,27 +103,48 @@ export default {
             selectedSettings.value.splice(index, 1);
         }
 
+        function formatAction(setting) {
+            const formattedAction = {
+                id: '',
+                value: null
+            };
+
+            // Ensure settingType is properly handled
+            if (!setting.settingType) {
+                console.error('Invalid setting: missing settingType', setting);
+                return null;
+            }
+
+            // Map settingType to id and value for Cloudflare API
+            switch (setting.settingType) {
+                case 'SSL':
+                    formattedAction.id = 'ssl';
+                    formattedAction.value = setting.ssl;
+                    break;
+                case 'Disable Apps':
+                    formattedAction.id = 'disable_apps';
+                    formattedAction.value = null;
+                    break;
+                case 'IP Geolocation Header':
+                    formattedAction.id = 'ip_geolocation';
+                    formattedAction.value = setting.ipGeolocation ? 'on' : 'off';
+                    break;
+                default:
+                    console.error('Invalid settingType encountered:', setting.settingType);
+                    return null;
+            }
+            return formattedAction;
+        }
+
         function submit() {
-            // Convert reactive data to a plain JavaScript object
-            const plainActions = JSON.parse(JSON.stringify(selectedSettings.value.map(setting => {
-                let action = { settingType: setting.settingType };
+            // Convert settings to Cloudflare-compatible format
+            const formattedActions = selectedSettings.value
+                .map(formatAction)
+                .filter(action => action !== null);  // Remove any null actions
 
-                if (setting.settingType === 'SSL') {
-                    action.ssl = setting.ssl;
-                } else if (setting.settingType === 'Disable Apps') {
-                    action.appsDisabled = true;
-                } else if (setting.settingType === 'IP Geolocation Header') {
-                    action.ipGeolocation = setting.ipGeolocation;
-                }
+            console.log('Formatted Actions being sent:', formattedActions);
 
-                return action;
-            })));
-
-            // Log the actions to check the plain object format
-            console.log('Plain Actions being sent:', plainActions);
-
-            // Ensure 'actions' field is a plain array
-            form.actions = plainActions;
+            form.actions = formattedActions;
 
             form.post(route('domains.pagerules.store', props.domain.id), {
                 onSuccess: () => {
@@ -128,9 +155,7 @@ export default {
             });
         }
 
-
-
-        return { form, selectedSettings, addSetting, removeSetting, submit };
+        return {form, selectedSettings, addSetting, removeSetting, submit};
     },
 };
 </script>

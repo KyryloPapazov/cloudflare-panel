@@ -63,10 +63,10 @@ export default {
 
 <template>
     <AuthenticatedLayout>
-        <div class="container mx-auto px-4 py-8">
+        <div class="container mx-auto p-6 m-6 bg-white rounded-lg shadow-md">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="text-2xl font-medium text-gray-800">Cloudflare Accounts</h1>
-                <NavLink :href="route('cloudflare-accounts.create')" class="flex btn btn-primary">
+                <NavLink :href="route('cloudflare-accounts.create')" class="flex">
                     Add Account
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="size-6">
@@ -77,7 +77,7 @@ export default {
             </div>
 
             <div class="overflow-x-auto">
-                <table class="min-w-full bg-white shadow-md rounded-lg">
+                <table class="w-11/12 mx-auto bg-white shadow-md rounded-lg">
                     <thead>
                     <tr class="w-full text-center text-amber-500 bg-blue-200">
                         <th class="px-4 py-5 border">Name</th>
@@ -90,7 +90,7 @@ export default {
                     <tr v-for="account in accounts" :key="account.id" class="border-t hover:bg-gray-100">
                         <td class="px-4 py-3 border">{{ account.name }}</td>
                         <td class="px-4 py-3 border">{{ account.email }}</td>
-                        <td class="px-4 py-3 border">
+                        <td class="px-4 py-3 border text-center hover:bg-gray-100">
                             <a :href="route('cloudflare-domains.index', account.id)"> Manage domains</a>
                         </td>
                         <td class="px-4 py-3 flex space-x-2">
@@ -105,7 +105,7 @@ export default {
                                     Edit
                                 </a>
                                 <a @click="openShowModal(account)"
-                                   class="flex  mr-5 text-green-500 pr-2">
+                                   class="flex  mr-5 text-green-500 pr-2 hover:bg-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"

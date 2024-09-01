@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('pagerules/{id}/index', [PageRuleController::class, 'index'])->name('domains.pagerules.index');
     Route::get('pagerules/{id}/create', [PageRuleController::class, 'create'])->name('domains.pagerules.create');
     Route::post('pagerules/{id}/store', [PageRuleController::class, 'store'])->name('domains.pagerules.store');
-    Route::get('pagerules/{id}/edit', [PageRuleController::class, 'edit'])->name('domains.pagerules.edit');
+    Route::get('pagerules/{domainId}/{ruleId}/edit', [PageRuleController::class, 'edit'])->name('domains.pagerules.edit');
     Route::put('pagerules/{domainId}/{ruleId}/update', [PageRuleController::class, 'update'])
         ->name('domains.pagerules.update');
     Route::delete('pagerules/{pagerule}', [PageRuleController::class, 'destroy'])->name('pagerules.destroy');
