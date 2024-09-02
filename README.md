@@ -4,7 +4,7 @@ This project is created using Laravel v11.21.0 (PHP v8.3.10).
 
 ### installation on Windows may be different
 
-### login: admin
+### login: admin@example.com
 ### password: admin
 ## Installation Requirements
 
@@ -125,5 +125,5 @@ Run these commands in the project directory (`your/path/cloudflare-panel`):
   ```
 
 ### Visit the project at [http://localhost:8000](http://localhost:8000). 
-### login: admin
+### login: admin@example.com
 ### password: admin
