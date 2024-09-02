@@ -1,24 +1,28 @@
 <?php
 
+use App\Http\Controllers\Cloudflare\CloudflareAccountController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
+    return Inertia::render('Auth/Login', [
+//        'canLogin' => Route::has('login'),
 //        'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
 });
 
-Route::get('/panel', function () {
-    return Inertia::render('Cloudflare/Index');
-})->middleware(['auth', 'verified'])->name('panel');
+
+//Route::get('/panel', function () {
+//    return Inertia::render('Cloudflare/Index');
+//})->middleware(['auth'])->name('panel');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/panel', [CloudflareAccountController::class, 'index'])
+        ->name('panel');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

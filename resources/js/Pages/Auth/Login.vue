@@ -14,6 +14,16 @@ defineProps({
     status: {
         type: String,
     },
+    laravelVersion: {
+        type: String,
+        required: true,
+    },
+    phpVersion: {
+        type: String,
+        required: true,
+    },
+
+
 });
 
 const form = useForm({
@@ -31,6 +41,9 @@ const submit = () => {
 
 <template>
     <GuestLayout>
+        <div class="py-3 text-center text-sm text-black dark:text-black/70">
+            Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }})
+        </div>
         <Head title="Log in" />
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -90,5 +103,8 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
+
     </GuestLayout>
+
+
 </template>
