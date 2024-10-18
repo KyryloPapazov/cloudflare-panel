@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
+use Inertia\Response;
+use function Laravel\Prompts\error;
+
 class CloudflareAccountController extends Controller
 {
 
@@ -22,9 +25,12 @@ class CloudflareAccountController extends Controller
     }
 
     // Отобразить форму для создания нового аккаунта
-    public function create()
+    public function create(Request $request)
     {
-        return Inertia::render('Cloudflare/Create');
+        return Inertia::render('Cloudflare/Create', [
+            'success' => session('success'),
+            'error' => session('error'),
+        ]);
     }
 
     // Сохранить новый аккаунт в базе данных
@@ -44,8 +50,10 @@ class CloudflareAccountController extends Controller
 
             return redirect()->route('cloudflare-accounts.index')->with('success', 'Account added successfully.');
         }
-        session()->flash('error', 'Failed to add accounts, please check your API key in https://dash.cloudflare.com/profile/api-tokens.');
-        return redirect()->route('cloudflare-accounts.create');
+
+        return redirect()->route('cloudflare-accounts.create')->withInput()
+            ->with('error', 'Failed to add account, please check your API key in https://dash.cloudflare.com/profile/api-tokens.')
+            ->withHeaders(['X-Inertia' => 'true']);
 
     }
 

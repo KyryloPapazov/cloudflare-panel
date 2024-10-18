@@ -1,12 +1,35 @@
-<script>
+<script >
 import {Head, useForm} from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
+import Notification from "@/Components/Notification.vue";
 
+import {useToast} from "vue-toastification";
+import {onMounted, watch} from "vue";
 
 export default {
-    components: {Head, NavLink, AuthenticatedLayout},
-    setup() {
+    components: {Head, NavLink, AuthenticatedLayout, Notification},
+
+    props: {
+        success: String,
+        error: String,
+        // flash: Object, // Получение флеш-сообщений из Inertia
+    },
+
+    setup(props) {
+        const toast = useToast();
+        onMounted(() => {
+            if (props.error) {
+                toast.error(props.error);
+            }
+            if (props.success) {
+                toast.success(props.success);
+            }
+        });
+
+
+
+
         const form = useForm({
             name: '',
             email: '',
@@ -14,7 +37,16 @@ export default {
         });
 
         function submit() {
-            form.post('/cloudflare-accounts');
+            form.post('/cloudflare-accounts',{
+                onFinish: () => {
+                    if (props.error) {
+                        toast.error(props.error);
+                    }
+                    if (props.success) {
+                        toast.success(props.success);
+                    }
+                }
+            });
         }
 
         return {form, submit};
@@ -35,8 +67,13 @@ export default {
 <template>
     <Head title="Create Account" />
     <AuthenticatedLayout>
+<!--        <div @click="showToast">Показати сповіщення</div>-->
         <div class="container mx-auto px-4 py-8">
             <div class="bg-white shadow-md rounded-lg p-6">
+
+<!--                <Notification v-if="flash && flash.success" :message="flash.success" type="success" />-->
+<!--                <Notification v-if="flash && flash.error" :message="flash.error" type="error" />-->
+
                 <h1 class="text-2xl font-medium text-gray-800 mb-4">Add Cloudflare Account</h1>
                 <form @submit.prevent="submit">
                     <div class="mb-4">
